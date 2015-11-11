@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
+
 
 /**
  * Author: Alexander Pinkerton
@@ -23,6 +23,8 @@ public class BufferOverflow extends Application {
     int width = 500;
     int height = 600;
     int stepCount = 1;
+    /* Stage 0 = Discovery; Stage 1 = Offset; Stage 2 = Exploit*/
+    int stage = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -91,48 +93,29 @@ public class BufferOverflow extends Application {
     }
 
     private void step(int stepCount) {
-        if (stepCount < addressCount) {
-            overflow();
-        } else if (stepCount == addressCount) {
-            clear(gc);
-            // addArray[addressCount - 4].setText("Insert ShellCode Here");
-            // addArray[addressCount - 5].setText("Insert ShellCode Here");
-            // addArray[addressCount - 6].setText("Insert ShellCode Here");
-            // addArray[addressCount - 7].setText("Insert ShellCode Here");
-            // addArray[addressCount - 1].setText("Change to Address of Shellcode");
+        if(stage == 0){
+            if (stepCount == 2) {
+                clear(gc);
+                addArray[1].setText("(555) 555-");
+                addArray[2].setText("5555");
+                drawShapes(gc);
+            } else if (stepCount == 3){
+                clear(gc);
+                for(int i = 3;i < addArray.length; i++){
+                    addArray[i].setText("Segmentation Fault");
+                    addArray[i].setC(Color.RED);
+                }
+                drawShapes(gc);
+                stage++;
+            }
+        }if (stage == 1){
             reset();
-            drawShapes(gc);
-            exploit();
+            overflow();
         }
     }
 
 
     private void overflow() {
-        clear(gc);
-        for (int i = 1; i < stepCount; i++) {
-            addArray[i].setC(Color.RED);
-            char c = (char) (64 + i);
-            addArray[i].setText(c + "" + c + "" + c + "" + c);
-        }
-        addArray[addressCount - 1].setText("RETURN ADDRESS");
-        drawShapes(gc);
-    }
-    //opens the new windows for the exploit
-    private void newWindow(Stage primaryStage){
-
-        primaryStage.setTitle("Customer Information");
-        Canvas canvas = new Canvas(width, height);
-        gc = canvas.getGraphicsContext2D();
-        Scene derp = new Scene(new Group(new Text(25, 25, "Hello World!")));
-        primaryStage.setScene(derp);
-        primaryStage.show();
-    }
-
-    //overflow points to the exploit() function.
-    //opens a new window showing the execution of code under exploit.
-    private void exploit(){
-        Stage stage = new Stage();
-        newWindow(stage);
         clear(gc);
         for (int i = 1; i < stepCount; i++) {
             addArray[i].setC(Color.RED);
