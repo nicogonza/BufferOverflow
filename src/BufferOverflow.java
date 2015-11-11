@@ -79,6 +79,7 @@ public class BufferOverflow extends Application {
     }
 
     private void reset(){
+        clear(gc);
         addArray[0].setText("ESP - Extended Stack Pointer");
         addArray[addressCount - 5].setText("char[10] phoneNumber");
         addArray[addressCount - 4].setText("bool loggedIn");
@@ -99,19 +100,22 @@ public class BufferOverflow extends Application {
                 addArray[1].setText("(555) 555-");
                 addArray[2].setText("5555");
                 drawShapes(gc);
-            } else if (stepCount == 3){
+            } else if (stepCount == 3) {
                 clear(gc);
-                for(int i = 3;i < addArray.length; i++){
+                for (int i = 3; i < addArray.length; i++) {
                     addArray[i].setText("Segmentation Fault");
                     addArray[i].setC(Color.RED);
                 }
                 drawShapes(gc);
+            }else {
                 stage++;
+                reset();
             }
-        }if (stage == 1){
-            reset();
+        }else if (stage == 1){
             overflow();
-        }if (stage == 2) {
+            stage++;
+
+        }else if (stage == 2) {
 
         }
     }
@@ -119,10 +123,11 @@ public class BufferOverflow extends Application {
 
     private void overflow() {
         clear(gc);
-        for (int i = 1; i < stepCount; i++) {
+        String overflowArray[] = {"AAAABBBBCC","CCDD","DDEE","EEFF","FFGG"};
+
+        for (int i = 1; i < overflowArray.length; i++) {
             addArray[i].setC(Color.RED);
-            char c = (char) (64 + i);
-            addArray[i].setText(c + "" + c + "" + c + "" + c);
+            addArray[i].setText(overflowArray[i]);
         }
         addArray[addressCount - 1].setText("RETURN ADDRESS");
         drawShapes(gc);
