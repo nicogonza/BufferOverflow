@@ -116,7 +116,7 @@ public class BufferOverflow extends Application {
             stage++;
 
         }else if (stage == 2) {
-
+            exploit();
         }
     }
 
