@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
+
 
 /**
  * Author: Alexander Pinkerton
@@ -111,6 +111,8 @@ public class BufferOverflow extends Application {
         }if (stage == 1){
             reset();
             overflow();
+        }if (stage == 2) {
+
         }
     }
 
