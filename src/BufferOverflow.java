@@ -116,6 +116,7 @@ public class BufferOverflow extends Application {
             stage++;
 
         }else if (stage == 2) {
+
             exploit();
         }
     }
@@ -146,16 +147,20 @@ public class BufferOverflow extends Application {
     //overflow points to the exploit() function.
 //opens a new window showing the execution of code under exploit.
     private void exploit(){
+
+        clear(gc);
+        addArray[0].setText("ESP - Extended Stack Pointer");
+        addArray[addressCount - 5].setText("/x90/x90/x90/x90/x90/x90/x90/x90/x90/x90");
+        addArray[addressCount - 4].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 3].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 2].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 1].setText("get_all_customers()");
+        for( int i = 0; i < addArray.length;i++ ) {
+            addArray[i].setC(Color.BLUE);
+        }
+        drawShapes(gc);
         Stage stage = new Stage();
         newWindow(stage);
-        clear(gc);
-        for (int i = 1; i < stepCount; i++) {
-            addArray[i].setC(Color.RED);
-            char c = (char) (64 + i);
-            addArray[i].setText(c + "" + c + "" + c + "" + c);
-        }
-        addArray[addressCount - 1].setText("RETURN ADDRESS");
-        drawShapes(gc);
     }
 
 
