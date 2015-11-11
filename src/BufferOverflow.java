@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
+
 
 /**
  * Author: Alexander Pinkerton
@@ -111,7 +111,8 @@ public class BufferOverflow extends Application {
         }if (stage == 1){
             reset();
             overflow();
-            exploit();
+        }if (stage == 2) {
+
         }
     }
 
@@ -126,32 +127,6 @@ public class BufferOverflow extends Application {
         addArray[addressCount - 1].setText("RETURN ADDRESS");
         drawShapes(gc);
     }
-    //opens the new windows for the exploit
-    private void newWindow(Stage primaryStage){
-
-        primaryStage.setTitle("Customer Information");
-        Canvas canvas = new Canvas(width, height);
-        gc = canvas.getGraphicsContext2D();
-        Scene derp = new Scene(new Group(new Text(25, 25, "Hello World!")));
-        primaryStage.setScene(derp);
-        primaryStage.show();
-    }
-
-    //overflow points to the exploit() function.
-//opens a new window showing the execution of code under exploit.
-    private void exploit(){
-        Stage stage = new Stage();
-        newWindow(stage);
-        clear(gc);
-        for (int i = 1; i < stepCount; i++) {
-            addArray[i].setC(Color.RED);
-            char c = (char) (64 + i);
-            addArray[i].setText(c + "" + c + "" + c + "" + c);
-        }
-        addArray[addressCount - 1].setText("RETURN ADDRESS");
-        drawShapes(gc);
-    }
-
 
 
     private void clear(GraphicsContext gc) {
