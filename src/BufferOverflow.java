@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.text.Text;
 
 /**
- * Author: Alexander Pinkerton
+ * Author: Alexander Pinkerton, Nico Gonzalez, Dylan Parris
  * Group: 9
  * BUFFER OVERFLOW SIMULATION
  */
