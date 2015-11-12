@@ -1,9 +1,16 @@
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
@@ -135,11 +142,23 @@ public class BufferOverflow extends Application {
     }
     //opens the new windows for the exploit
     private void newWindow(Stage primaryStage){
+        TableView<Customer> table = new TableView<Customer>();
+        ObservableList<Customer> customers = getCustomers();
+        table.setItems(customers);
+
+        TableColumn<Customer,String> firstNameCol = new TableColumn<Customer,String>("First Name");
+        firstNameCol.setCellValueFactory(new PropertyValueFactory("firstName"));
+        TableColumn<Customer,String> lastNameCol = new TableColumn<Customer,String>("Last Name");
+        lastNameCol.setCellValueFactory(new PropertyValueFactory("lastName"));
+        TableColumn<Customer,String> numberCol = new TableColumn<Customer,String>("Phone Number");
+        numberCol.setCellValueFactory(new PropertyValueFactory("number"));
+
+        table.getColumns().setAll(firstNameCol, lastNameCol,numberCol);
 
         primaryStage.setTitle("Customer Information");
-        Canvas canvas = new Canvas(width, height);
+        Canvas canvas = new Canvas(0, 10);
         gc = canvas.getGraphicsContext2D();
-        Scene derp = new Scene(new Group(new Text(25, 25, "Hello World!")));
+        Scene derp = new Scene(table);
         primaryStage.setScene(derp);
         primaryStage.show();
     }
@@ -174,6 +193,51 @@ public class BufferOverflow extends Application {
             addArray[i].draw(gc);
         }
     }
+
+    public ObservableList<Customer> getCustomers() {
+        ObservableList<Customer> c= FXCollections.observableArrayList();
+        c.add(new Customer("Mike","Brown","330-222-1111"));
+        c.add(new Customer("John","Sanches","330-222-1111"));
+        c.add(new Customer("Mike","Phillips","330-222-1111"));
+        c.add(new Customer("Ryan","Smith","330-222-1111"));
+        c.add(new Customer("Jorge","Woods","330-222-1111"));
+        c.add(new Customer("Adam","Young","330-222-1111"));
+        c.add(new Customer("Alex","Frank","330-222-1111"));
+        c.add(new Customer("Sam","Lopez","330-222-1111"));
+        return c;
+    }
+
+    public class Customer {
+        public Customer(String name,String last,String number){
+            setFirstName(name);
+            setLastName(last);
+            setNumber(number);
+        }
+        private StringProperty number;
+        public void setNumber(String value) { numberProperty().set(value); }
+        public String getNumber() { return numberProperty().get(); }
+        public StringProperty numberProperty() {
+            if (number == null) number = new SimpleStringProperty(this, "###-###-####");
+            return number;
+        }
+
+        private StringProperty firstName;
+        public void setFirstName(String value) { firstNameProperty().set(value); }
+        public String getFirstName() { return firstNameProperty().get(); }
+        public StringProperty firstNameProperty() {
+            if (firstName == null) firstName = new SimpleStringProperty(this, "firstName");
+            return firstName;
+        }
+
+        private StringProperty lastName;
+        public void setLastName(String value) { lastNameProperty().set(value); }
+        public String getLastName() { return lastNameProperty().get(); }
+        public StringProperty lastNameProperty() {
+            if (lastName == null) lastName = new SimpleStringProperty(this, "lastName");
+            return lastName;
+        }
+    }
+
 
     public int getHeight() {
         return height;
