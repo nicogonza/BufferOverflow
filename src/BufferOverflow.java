@@ -123,7 +123,6 @@ public class BufferOverflow extends Application {
             stage++;
 
         }else if (stage == 2) {
-
             exploit();
         }
     }
@@ -133,9 +132,9 @@ public class BufferOverflow extends Application {
         clear(gc);
         String overflowArray[] = {"AAAABBBBCC","CCDD","DDEE","EEFF","FFGG"};
 
-        for (int i = 1; i < overflowArray.length; i++) {
-            addArray[i].setC(Color.RED);
-            addArray[i].setText(overflowArray[i]);
+        for (int i = 0; i < overflowArray.length; i++) {
+            addArray[i + 1].setC(Color.RED);
+            addArray[i + 1].setText(overflowArray[i]);
         }
         addArray[addressCount - 1].setText("RETURN ADDRESS");
         drawShapes(gc);
@@ -177,6 +176,7 @@ public class BufferOverflow extends Application {
         for( int i = 0; i < addArray.length;i++ ) {
             addArray[i].setC(Color.BLUE);
         }
+        //addArray[addressCount - 1].setText("RETURN ADDRESS");
         drawShapes(gc);
         Stage stage = new Stage();
         newWindow(stage);
