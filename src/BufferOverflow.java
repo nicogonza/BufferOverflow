@@ -123,7 +123,7 @@ public class BufferOverflow extends Application {
             stage++;
 
         }else if (stage == 2) {
-            exploit();
+            exploit2();
         }
     }
 
@@ -162,6 +162,31 @@ public class BufferOverflow extends Application {
         primaryStage.show();
     }
 
+
+    private void exploit2(){
+        String[] cmd = {"C:\\WINDOWS\\system32\\cmd.exe","/c","start"};
+
+        clear(gc);
+        addArray[0].setText("ESP - Extended Stack Pointer");
+        addArray[addressCount - 5].setText("/x90/x90/x90/x90/x90/x90/x90/x90/x90/x90");
+        addArray[addressCount - 4].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 3].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 2].setText("/x90/x90/x90/x90");
+        addArray[addressCount - 1].setText("/bin/sh");
+        for( int i = 0; i < addArray.length;i++ ) {
+            addArray[i].setC(Color.BLUE);
+        }
+        //addArray[addressCount - 1].setText("RETURN ADDRESS");
+        drawShapes(gc);
+
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            //Process p = runtime.exec(notepad);
+            Process p = runtime.exec(cmd);
+        } catch (java.io.IOException exception) {
+            System.out.println("Caught IOException: " + exception.getMessage());
+        }
+    }
     //overflow points to the exploit() function.
 //opens a new window showing the execution of code under exploit.
     private void exploit(){
